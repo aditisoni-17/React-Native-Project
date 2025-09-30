@@ -19,6 +19,13 @@ It’s designed to give users a smooth experience — from browsing restaurants 
 
 ---
 
+## 🔐 Authentication
+
+- **Login & Signup Screens:** Implemented with form validation and navigation bar.
+- **Navigation:** Seamless transition between Login, Signup, and Home screens.
+- **UI Components:** Utilized React Native Paper for consistent design.
+
+
 ## 🛠 Tech Stack
 
 | Layer          | Technology |
