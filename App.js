@@ -23,7 +23,7 @@ export default function App() {
             options={{ headerShown: false }} />
           <Stack.Screen name="Restaurant" component={RestaurantScreen}
             options={{ headerShown: false }} />
-          <Stack.Screen name="Basket" component={BasketScreen}
+          <Stack.Screen name="Cart" component={BasketScreen}
             options={{ presentation: 'modal', headerShown: false }} />
           <Stack.Screen name="OrderPlacing" component={OrderPlacingScreen}
             options={{ headerShown: false }} />
