@@ -9,9 +9,6 @@ export const basketSlice = createSlice({
   name: 'basket',
   initialState,
   reducers: {
-    // every reducer function contains two parameters, state and action
-    // state = initialState
-    // action = action which we are dispatching, maybe id, image, name, price, etc.
     addToBasket: (state, action) => {
       // state.items = array of items (objects) in the basket
       // action.payload = item (object) which we are adding to the basket
