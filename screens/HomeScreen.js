@@ -48,9 +48,8 @@ const HomeScreen = () => {
                 <Category />
                 {/* Offer near you */}
                 <Offer />
-                {/* Feature */}
+                
                 <Feature />
-                {/* Tasty Discount */}
                 <Discount />
             </ScrollView>
 

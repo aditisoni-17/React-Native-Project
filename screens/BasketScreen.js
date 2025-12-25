@@ -23,12 +23,10 @@ const BasketScreen = () => {
         const basketItems = items.reduce((result, item) => {
             // this code takes an array of objects and groups them by their 'name' property into a new object, where each property is the 'name' and the value is an array of objects with that 'name'.
             (result[item.name] = result[item.name] || []).push(item);
-            // key(item name)    value of previously created key (array)
+            
             // assigning or updating a value of key of object, object[key] = value ... and while fetching the value, const val = object.key
-            // we are saying, result[key] = value || []   next, item will be pushed into result[key], which is an array (empty or non-empty)
             return result;
         }, {})
-        // 'basketItems' is an object which contains the arrays, which contain the similar object items.
         setGroupedItems(basketItems);
     }, [items])
 
