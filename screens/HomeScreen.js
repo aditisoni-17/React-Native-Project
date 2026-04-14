@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, Image, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -8,15 +8,18 @@ import Icon3 from 'react-native-vector-icons/Entypo'
 import { ScrollView } from "react-native";
 
 import Category from "../components/Home/Category";
+import CategoryFilter from "../components/Home/CategoryFilter";
 import Offer from "../components/Home/Offer";
 import Feature from "../components/Home/Feature";
 import Discount from "../components/Home/Discount";
-import { getHomeData } from "../services/restaurantService";
+import { filterRestaurants, getHomeData } from "../services/restaurantService";
 
 const HomeScreen = () => {
     const [restaurants, setRestaurants] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("all");
 
     useEffect(() => {
         let active = true;
@@ -38,8 +41,14 @@ const HomeScreen = () => {
         };
     }, []);
 
+    const filteredRestaurants = useMemo(() => {
+        return filterRestaurants(restaurants, searchQuery, selectedCategory);
+    }, [restaurants, searchQuery, selectedCategory]);
+
+    const hasFilteredResults = filteredRestaurants.length > 0;
+
     return (
-        <SafeAreaView className=" bg-white">
+        <SafeAreaView className="flex-1 bg-white">
 
             {/* Header */}
             <View className=" flex-row justify-between mt-2 mx-3 pb-4">
@@ -60,7 +69,14 @@ const HomeScreen = () => {
             <View className="flex-row items-center mx-3 pb-4 space-x-2">
                 <View className=" flex-row flex-auto space-x-2 py-1 px-2 items-center bg-gray-200">
                     <Icon name="search1" size={18} />
-                    <TextInput placeholder="Restaurants and cuisines" keyboardType="default" className=" text-sm" />
+                    <TextInput
+                        value={searchQuery}
+                        onChangeText={setSearchQuery}
+                        placeholder="Restaurants and cuisines"
+                        keyboardType="default"
+                        autoCapitalize="none"
+                        className="text-sm flex-1"
+                    />
                 </View>
                 <Icon3 name="sound-mix" size={28} color="#00CCBB" />
             </View>
@@ -72,11 +88,25 @@ const HomeScreen = () => {
                     <Text className="mt-3 text-gray-600">Loading restaurants...</Text>
                 </View>
             ) : (
-                <ScrollView showsVerticalScrollIndicator={false} className="bg-gray-100">
+                <ScrollView showsVerticalScrollIndicator={false} className="flex-1 bg-gray-100">
                     <Category categories={categories} />
-                    <Offer restaurants={restaurants} />
-                    <Feature restaurants={restaurants} />
-                    <Discount restaurants={restaurants} />
+                    <CategoryFilter
+                        categories={categories.map((category) => category.name)}
+                        selectedCategory={selectedCategory}
+                        onSelectCategory={setSelectedCategory}
+                    />
+                    {hasFilteredResults ? (
+                        <>
+                            <Offer restaurants={filteredRestaurants} />
+                            <Feature restaurants={filteredRestaurants} />
+                            <Discount restaurants={filteredRestaurants} />
+                        </>
+                    ) : (
+                        <View className="px-4 py-10">
+                            <Text className="text-lg font-semibold text-gray-800">No restaurants match your search.</Text>
+                            <Text className="mt-2 text-gray-500">Try clearing the search or changing the category filter.</Text>
+                        </View>
+                    )}
                 </ScrollView>
             )}
 

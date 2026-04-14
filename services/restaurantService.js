@@ -21,6 +21,20 @@ export async function getRestaurantById(id) {
   return apiGet(`/restaurants/${id}`, fallbackRestaurants.find((item) => item.id === Number(id)) || null);
 }
 
+export function getRestaurantCategories(restaurants = fallbackRestaurants) {
+  return ['all', ...new Set(restaurants.map((restaurant) => restaurant.category))];
+}
+
+export function filterRestaurants(restaurants, query, category) {
+  const filteredByQuery = searchRestaurants(restaurants, query);
+
+  if (!category || category === 'all') {
+    return filteredByQuery;
+  }
+
+  return filteredByQuery.filter((restaurant) => restaurant.category === category);
+}
+
 export function searchRestaurants(restaurants, query) {
   const normalizedQuery = query.trim().toLowerCase();
   if (!normalizedQuery) {
