@@ -1,25 +1,28 @@
-import React, { Component } from 'react'
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Text, View, SafeAreaView } from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import * as Progress from 'react-native-progress';
-import { useEffect } from 'react';
 
 const OrderPlacingScreen = () => {
 
     const navigation = useNavigation();
     const [bar, setBar] = useState(0)
 
-    setTimeout(() => {
-        setBar(bar + 0.1)
-    }, 500);
-
     useEffect(() => {
-        setTimeout(() => {
+        const interval = setInterval(() => {
+            setBar((value) => Math.min(value + 0.1, 1));
+        }, 500);
+
+        const timeout = setTimeout(() => {
             navigation.navigate('Delivery')
         }, 6000);
-    }, [])
+
+        return () => {
+            clearInterval(interval);
+            clearTimeout(timeout);
+        };
+    }, [navigation])
 
     return (
         <SafeAreaView className='items-center justify-center h-full w-full bg-[#19c7b9]'>
@@ -30,7 +33,7 @@ const OrderPlacingScreen = () => {
             <Animatable.Text
                 animation="slideInUp" iterationCount={1}
                 className='text-lg text-white mt-7' >
-                Waining for resturent to acccept your order
+                Waiting for restaurant to accept your order
             </Animatable.Text>
             <Progress.Bar progress={bar} width={200} height={7} className='mt-5 rounded-xl' color='white' />
         </SafeAreaView>

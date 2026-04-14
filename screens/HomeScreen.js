@@ -22,7 +22,7 @@ const HomeScreen = () => {
             <View className=" flex-row justify-between mt-2 mx-3 pb-4">
                 <View className=" flex-row space-x-2 items-center ">
                     <Image
-                        src="https://images.unsplash.com/photo-1619454016518-697bc231e7cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"
+                        source={{ uri: "https://images.unsplash.com/photo-1619454016518-697bc231e7cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" }}
                         className=" h-9 w-9 rounded-full"
                     />
                     <View>
@@ -37,7 +37,7 @@ const HomeScreen = () => {
             <View className="flex-row items-center mx-3 pb-4 space-x-2">
                 <View className=" flex-row flex-auto space-x-2 py-1 px-2 items-center bg-gray-200">
                     <Icon name="search1" size={18} />
-                    <TextInput placeholder="Resturents and cuisines" keyboardType="default" className=" text-sm" />
+                    <TextInput placeholder="Restaurants and cuisines" keyboardType="default" className=" text-sm" />
                 </View>
                 <Icon3 name="sound-mix" size={28} color="#00CCBB" />
             </View>

@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, Text, TouchableOpacity, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux'
 import { removeFromBasket, selectBasketItems, BasketTotal } from '../features/basketSlice'
-import { useMemo, useState } from 'react'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/SimpleLineIcons'
 import { useNavigation } from '@react-navigation/native'
@@ -13,13 +12,13 @@ const BasketScreen = () => {
 
     const items = useSelector(selectBasketItems);
     const subtotal = useSelector(BasketTotal);
-    const [groupedItems, setGroupedItems] = useState([]);
+    const [groupedItems, setGroupedItems] = useState({});
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
 
-    useMemo(() => {
+    useEffect(() => {
         const basketItems = items.reduce((result, item) => {
             // this code takes an array of objects and groups them by their 'name' property into a new object, where each property is the 'name' and the value is an array of objects with that 'name'.
             (result[item.name] = result[item.name] || []).push(item);
@@ -47,7 +46,7 @@ const BasketScreen = () => {
                 </View>
                 <View className='bg-white my-5 flex-row items-center justify-between px-4 py-4'>
                     <View className='flex-row items-center space-x-3'>
-                        <Image src="https://images.unsplash.com/photo-1619454016518-697bc231e7cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80"
+                        <Image source={{ uri: "https://images.unsplash.com/photo-1619454016518-697bc231e7cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=580&q=80" }}
                             className=" h-9 w-9 rounded-full" />
                         <Text className='text-lg'>Deliver in 50-70 min</Text>
                     </View>
@@ -91,11 +90,11 @@ const BasketScreen = () => {
                     <View className='flex-row justify-between px-5 pt-4'>
                         <Text className='text-gray-500'>Delivery fees</Text>
                         {/* { JSON.stringify(groupedItems) !== '{}' && setDeliverycost(5.99) } */}
-                        <Text className='text-gray-500'>$ {JSON.stringify(groupedItems) === '{}' ? '0.00' : 5.99}</Text>
+                        <Text className='text-gray-500'>$ {Object.keys(groupedItems).length === 0 ? '0.00' : 5.99}</Text>
                     </View>
                     <View className='flex-row justify-between px-5 pt-4'>
                         <Text className='font-bold'>order Total</Text>
-                        <Text className='font-bold'>$ {(subtotal + (JSON.stringify(groupedItems) === '{}' ? 0 : 5.99)).toFixed(2)}</Text>
+                        <Text className='font-bold'>$ {(subtotal + (Object.keys(groupedItems).length === 0 ? 0 : 5.99)).toFixed(2)}</Text>
                     </View>
                 </View>
                 <TouchableOpacity className='mx-4 my-5 p-3 rounded-lg bg-[#00CCBB]' onPress={() => { navigation.navigate("OrderPlacing") }} >
