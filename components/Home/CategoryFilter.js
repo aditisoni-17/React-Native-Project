@@ -2,7 +2,9 @@ import React from 'react'
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native'
 
 const CategoryFilter = ({ categories = [], selectedCategory = 'all', onSelectCategory }) => {
-  const filterCategories = ['all', ...new Set(categories)];
+  const filterCategories = categories.length > 0
+    ? categories
+    : [{ key: 'all', label: 'All' }];
 
   return (
     <View className="mt-3">
@@ -15,16 +17,19 @@ const CategoryFilter = ({ categories = [], selectedCategory = 'all', onSelectCat
         }}
       >
         {filterCategories.map((category) => {
-          const isSelected = selectedCategory === category;
+          const option = typeof category === 'string'
+            ? { key: category, label: category === 'all' ? 'All' : category }
+            : category;
+          const isSelected = selectedCategory === option.key;
 
           return (
             <TouchableOpacity
-              key={category}
-              onPress={() => onSelectCategory(category)}
+              key={option.key}
+              onPress={() => onSelectCategory(option.key)}
               className={`px-4 py-2 rounded-full border ${isSelected ? 'bg-[#00CCBB] border-[#00CCBB]' : 'bg-white border-gray-300'}`}
             >
               <Text className={`font-semibold ${isSelected ? 'text-white' : 'text-gray-700'}`}>
-                {category === 'all' ? 'All' : category}
+                {option.label}
               </Text>
             </TouchableOpacity>
           );

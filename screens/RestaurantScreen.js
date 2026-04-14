@@ -1,5 +1,5 @@
-import React, { Component, useLayoutEffect } from 'react'
-import { Image, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, Image, Text, View } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ScrollView } from 'react-native';
@@ -11,13 +11,65 @@ import { TouchableOpacity } from 'react-native';
 
 import Menu from '../components/ResturentMenu/Menu';
 import BasketCart from '../components/ResturentMenu/BasketCart';
+import { getRestaurantById } from '../services/restaurantService';
 
 
 const RestaurantScreen = () => {
 
   const navigation = useNavigation();
   const route = useRoute();
-  const restaurant = route.params?.restaurant ?? route.params;
+  const routeRestaurant = route.params?.restaurant ?? route.params;
+  const [restaurant, setRestaurant] = useState(routeRestaurant?.image ? routeRestaurant : null);
+  const [loading, setLoading] = useState(!routeRestaurant?.image);
+
+  useEffect(() => {
+    let active = true;
+
+    const loadRestaurant = async () => {
+      if (routeRestaurant?.image) {
+        setLoading(false);
+        return;
+      }
+
+      if (routeRestaurant?.id) {
+        const restaurantData = await getRestaurantById(routeRestaurant.id);
+        if (active) {
+          setRestaurant(restaurantData);
+          setLoading(false);
+        }
+        return;
+      }
+
+      setLoading(false);
+    };
+
+    loadRestaurant();
+
+    return () => {
+      active = false;
+    };
+  }, [routeRestaurant]);
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator size="large" color="#00CCBB" />
+        <Text className="mt-4 text-gray-600">Loading restaurant...</Text>
+      </SafeAreaView>
+    );
+  }
+
+  if (!restaurant) {
+    return (
+      <SafeAreaView className="flex-1 items-center justify-center bg-white">
+        <Text className="text-2xl font-bold text-gray-800">Restaurant not found</Text>
+        <Text className="mt-2 text-gray-500 text-center px-6">The restaurant details could not be loaded. Please go back and try again.</Text>
+        <TouchableOpacity className="mt-6 px-5 py-3 rounded-full bg-[#00CCBB]" onPress={() => navigation.navigate('Home')}>
+          <Text className="text-white font-semibold">Go Home</Text>
+        </TouchableOpacity>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <>

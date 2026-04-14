@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { ScrollView, Text, TouchableOpacity, View, Image } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux'
-import { addToBasket, removeFromBasket, selectBasketItems, BasketTotal } from '../features/basketSlice'
+import { addToBasket, removeFromBasket, clearBasket, selectBasketItems, BasketTotal } from '../features/basketSlice'
 import Icon from 'react-native-vector-icons/AntDesign'
 import Icon2 from 'react-native-vector-icons/SimpleLineIcons'
 import { useNavigation } from '@react-navigation/native'
@@ -57,6 +57,11 @@ const BasketScreen = () => {
                     </View>
                     <Text className='text-lg text-[#00CCBB]'>Change</Text>
                 </View>
+                {!isEmpty && (
+                    <TouchableOpacity className='self-end mr-4 mb-3' onPress={() => dispatch(clearBasket())}>
+                        <Text className='font-semibold text-[#00CCBB]'>Clear basket</Text>
+                    </TouchableOpacity>
+                )}
 
                 {/* Basket items */}
                 <ScrollView showsVerticalScrollIndicator={false}>

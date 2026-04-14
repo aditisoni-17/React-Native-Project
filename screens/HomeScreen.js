@@ -12,7 +12,7 @@ import CategoryFilter from "../components/Home/CategoryFilter";
 import Offer from "../components/Home/Offer";
 import Feature from "../components/Home/Feature";
 import Discount from "../components/Home/Discount";
-import { filterRestaurants, getHomeData } from "../services/restaurantService";
+import { filterRestaurants, getHomeData, getRestaurantCategoryOptions } from "../services/restaurantService";
 
 const HomeScreen = () => {
     const [restaurants, setRestaurants] = useState([]);
@@ -44,6 +44,10 @@ const HomeScreen = () => {
     const filteredRestaurants = useMemo(() => {
         return filterRestaurants(restaurants, searchQuery, selectedCategory);
     }, [restaurants, searchQuery, selectedCategory]);
+
+    const categoryOptions = useMemo(() => {
+        return getRestaurantCategoryOptions(restaurants);
+    }, [restaurants]);
 
     const hasFilteredResults = filteredRestaurants.length > 0;
 
@@ -91,7 +95,7 @@ const HomeScreen = () => {
                 <ScrollView showsVerticalScrollIndicator={false} className="flex-1 bg-gray-100">
                     <Category categories={categories} />
                     <CategoryFilter
-                        categories={categories.map((category) => category.name)}
+                        categories={categoryOptions}
                         selectedCategory={selectedCategory}
                         onSelectCategory={setSelectedCategory}
                     />

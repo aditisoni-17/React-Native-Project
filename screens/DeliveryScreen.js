@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/AntDesign'
@@ -14,25 +14,20 @@ const DeliveryScreen = () => {
     
     const [myLatitude, setMyLatitude] = useState(0);
     const [myLongitude, setMyLongitude] = useState(0);
+    const hasLocation = myLatitude !== 0 && myLongitude !== 0;
 
     useEffect(() => {
         const getPermission = async () => {
             const { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                console.log('Permission to access location was denied');
                 return;
             }
             const currentLocation = await Location.getCurrentPositionAsync({});
-            console.log("currentLocation: ", currentLocation.coords.latitude);
-            console.log("currentLocation: ", currentLocation.coords.longitude);
             setMyLatitude(currentLocation.coords.latitude);
             setMyLongitude(currentLocation.coords.longitude);
         };
         getPermission();
     }, []);
-
-    console.log("myLatitude: ", myLatitude);
-    console.log("myLongitude: ", myLongitude);
 
     const coordinates = [
         {
@@ -90,12 +85,14 @@ const DeliveryScreen = () => {
                     image={require('../assets/deliveryboy.png')}
                 />
 
-                <Marker
-                    coordinate={coordinates[1]}
-                    title='Home'
-                    pinColor='#cc0000'
-                    image={require('../assets/homeLocation.png')}
-                />
+                {hasLocation && (
+                    <Marker
+                        coordinate={coordinates[1]}
+                        title='Home'
+                        pinColor='#cc0000'
+                        image={require('../assets/homeLocation.png')}
+                    />
+                )}
             </MapView>
 
             {/* Delivery boy details */}

@@ -4,6 +4,17 @@ import db from '../mock-api/db.json';
 const fallbackRestaurants = db.restaurants;
 const fallbackCategories = db.categories;
 
+function normalizeCategoryKey(category) {
+  return String(category ?? '').trim().toLowerCase();
+}
+
+function formatCategoryLabel(category) {
+  return String(category ?? '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/^./, (char) => char.toUpperCase());
+}
+
 export async function getHomeData() {
   const [restaurants, categories] = await Promise.all([
     apiGet('/restaurants', fallbackRestaurants),
@@ -22,17 +33,31 @@ export async function getRestaurantById(id) {
 }
 
 export function getRestaurantCategories(restaurants = fallbackRestaurants) {
-  return ['all', ...new Set(restaurants.map((restaurant) => restaurant.category))];
+  return ['all', ...new Set(restaurants.map((restaurant) => normalizeCategoryKey(restaurant.category)))];
+}
+
+export function getRestaurantCategoryOptions(restaurants = fallbackRestaurants) {
+  return [
+    { key: 'all', label: 'All' },
+    ...new Map(
+      restaurants.map((restaurant) => {
+        const key = normalizeCategoryKey(restaurant.category);
+        return [key, { key, label: formatCategoryLabel(restaurant.category) }];
+      })
+    ).values(),
+  ];
 }
 
 export function filterRestaurants(restaurants, query, category) {
   const filteredByQuery = searchRestaurants(restaurants, query);
 
-  if (!category || category === 'all') {
+  const normalizedCategory = normalizeCategoryKey(category);
+
+  if (!normalizedCategory || normalizedCategory === 'all') {
     return filteredByQuery;
   }
 
-  return filteredByQuery.filter((restaurant) => restaurant.category === category);
+  return filteredByQuery.filter((restaurant) => normalizeCategoryKey(restaurant.category) === normalizedCategory);
 }
 
 export function searchRestaurants(restaurants, query) {

@@ -22,12 +22,15 @@ export const basketSlice = createSlice({
       }
       state.items = newBasket;
     },
+    clearBasket: (state) => {
+      state.items = [];
+    },
   },
 })
 
 
 // Action creators are generated for each case reducer function
-export const { addToBasket, removeFromBasket } = basketSlice.actions;
+export const { addToBasket, removeFromBasket, clearBasket } = basketSlice.actions;
 
 
 export const selectBasketItemsWithId = (state, id) => {
@@ -44,9 +47,9 @@ export const BasketTotal = (state) => {
   return (state.basket.items.reduce(calculate, 0))
 };
 
+export const selectBasketCount = (state) => state.basket.items.length;
+
 const calculate = (total, item) => {
   return (total + item.price)
 };
-// console.log( "This is " + selectBasketItems)
-
 export default basketSlice.reducer

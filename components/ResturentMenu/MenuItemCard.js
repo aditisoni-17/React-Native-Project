@@ -1,5 +1,5 @@
-import React, { Component, useState } from 'react'
-import { Image, Text, TouchableOpacity, View, SafeAreaView } from 'react-native'
+import React, { useState } from 'react'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/AntDesign'
 import { useDispatch, useSelector } from 'react-redux';
 import { addToBasket, removeFromBasket, selectBasketItemsWithId } from '../../features/basketSlice';
