@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "api": "node mock-api/server.js"
   },
   "dependencies": {
     "@react-native-community/geolocation": "^3.0.6",

@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Text, View, ScrollView } from 'react-native'
-import { data } from '../../data/Data'
 import DiscountCard from './DiscountCard'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const Discount = () => {
+const Discount = ({ restaurants = [] }) => {
 
     return (
         <View className='mt-3'>
@@ -20,10 +19,10 @@ const Discount = () => {
                 paddingHorizontal: 7,
             }}>
                 {
-                    data.map((offer) => {
+                    restaurants.map((restaurant) => {
                         return (
-                            <View key={offer.id} className='pb-36'>
-                                <DiscountCard key={offer.id} id={offer.id} img={offer.image} name={offer.name} cat={offer.category} price={offer.price} location={offer.location} des={offer.desc} />
+                            <View key={restaurant.id} className='pb-36'>
+                                <DiscountCard restaurant={restaurant} />
                             </View>
                         )
                     })

@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
-import { Text, View, ScrollView } from 'react-native'
-import { data } from '../../data/Data'
+import React from 'react'
+import { ScrollView } from 'react-native'
 import CategoryCard from './CategoryCard'
 
-const Category = () => {
+const Category = ({ categories = [] }) => {
     return (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} 
         contentContainerStyle={{
@@ -11,7 +10,7 @@ const Category = () => {
             paddingHorizontal: 7,
         }} >
             {
-                data.map((category) => {
+                categories.map((category) => {
                     return (
                         <CategoryCard key={category.id} img={category.image} name={category.name} />
                     )

@@ -1,26 +1,46 @@
-import React from 'react'
-import { Text, View } from 'react-native'
-import { data } from '../../data/Data'
+import React, { useEffect, useState } from 'react'
+import { ActivityIndicator, View } from 'react-native'
 import MenuItemCard from './MenuItemCard'
+import { getRestaurantsByCategory } from '../../services/restaurantService'
 
 const Menu = ({ category }) => {
+    const [items, setItems] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const item = data.filter((item) => {
-        return (item.category === category)
-    })
+    useEffect(() => {
+        let active = true;
+
+        const loadMenu = async () => {
+            setLoading(true);
+            const menuItems = await getRestaurantsByCategory(category);
+            if (active) {
+                setItems(menuItems);
+                setLoading(false);
+            }
+        };
+
+        loadMenu();
+
+        return () => {
+            active = false;
+        };
+    }, [category])
 
     return (
         <View>
-            {
-                item.map((info) => {
+            {loading ? (
+                <View className="items-center py-8">
+                    <ActivityIndicator size="large" color="#00CCBB" />
+                </View>
+            ) : (
+                items.map((info) => {
                     return (
                         <MenuItemCard key={info.id} id={info.id} img={info.image} name={info.name} desc={info.desc} price={info.price} />
                     )
                 })
-            }
+            )}
         </View>
     )
-
 }
 
 export default Menu

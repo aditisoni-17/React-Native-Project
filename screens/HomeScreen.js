@@ -1,6 +1,5 @@
-import React, { Component, useLayoutEffect } from "react";
-import { Image, Text, TextInput, View } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Image, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -12,8 +11,32 @@ import Category from "../components/Home/Category";
 import Offer from "../components/Home/Offer";
 import Feature from "../components/Home/Feature";
 import Discount from "../components/Home/Discount";
+import { getHomeData } from "../services/restaurantService";
 
 const HomeScreen = () => {
+    const [restaurants, setRestaurants] = useState([]);
+    const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let active = true;
+
+        const loadHomeData = async () => {
+            setLoading(true);
+            const homeData = await getHomeData();
+            if (active) {
+                setRestaurants(homeData.restaurants);
+                setCategories(homeData.categories);
+                setLoading(false);
+            }
+        };
+
+        loadHomeData();
+
+        return () => {
+            active = false;
+        };
+    }, []);
 
     return (
         <SafeAreaView className=" bg-white">
@@ -43,15 +66,19 @@ const HomeScreen = () => {
             </View>
 
             {/* Body */}
-            <ScrollView showsVerticalScrollIndicator={false} className="bg-gray-100">
-                {/* categories */}
-                <Category />
-                {/* Offer near you */}
-                <Offer />
-                
-                <Feature />
-                <Discount />
-            </ScrollView>
+            {loading ? (
+                <View className="flex-1 items-center justify-center bg-gray-100">
+                    <ActivityIndicator size="large" color="#00CCBB" />
+                    <Text className="mt-3 text-gray-600">Loading restaurants...</Text>
+                </View>
+            ) : (
+                <ScrollView showsVerticalScrollIndicator={false} className="bg-gray-100">
+                    <Category categories={categories} />
+                    <Offer restaurants={restaurants} />
+                    <Feature restaurants={restaurants} />
+                    <Discount restaurants={restaurants} />
+                </ScrollView>
+            )}
 
         </SafeAreaView>
     );

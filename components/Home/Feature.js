@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Text, View, ScrollView } from 'react-native'
-import { data } from '../../data/Data'
 import FeatureCard from './FeatureCard'
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const Feature = () => {
+const Feature = ({ restaurants = [] }) => {
 
     return (
         <View className='mt-3'>
@@ -20,10 +19,10 @@ const Feature = () => {
                 paddingHorizontal: 7,
             }}>
                 {
-                    data.map((offer) => {
+                    restaurants.map((restaurant) => {
                         return (
-                            <View key={offer.id}>
-                                <FeatureCard key={offer.id} id={offer.id} img={offer.image} name={offer.name} cat={offer.category} price={offer.price} location={offer.location} des={offer.desc} />
+                            <View key={restaurant.id}>
+                                <FeatureCard restaurant={restaurant} />
                             </View>
                         )
                     })
