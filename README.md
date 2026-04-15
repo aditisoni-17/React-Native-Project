@@ -7,15 +7,15 @@ It’s designed to give users a smooth experience — from browsing restaurants 
 
 ---
 
-## ✨ Key Features
+##  Key Features
 
-- 🎨 **Modern Material UI** – Built with React Native Paper for consistent, beautiful design.
-- 🏪 **Restaurant & Menu Browsing** – Explore local restaurants and view detailed menus.
-- 🛒 **Simple Ordering Flow** – Add to cart, customize items, and place your order with a single tap.
-- 🚚 **Live Order Tracking** – Watch your order progress from kitchen to doorstep.
-- 🔐 **Secure Authentication** – Signup/Login with validation and state persistence.
-- 🌙 **Light & Dark Themes** – Seamlessly switch between light and dark modes.
-- ⚡ **Fast & Responsive** – Optimized for both iOS and Android.
+-  **Modern Material UI** – Built with React Native Paper for consistent, beautiful design.
+-  **Restaurant & Menu Browsing** – Explore local restaurants and view detailed menus.
+-  **Simple Ordering Flow** – Add to cart, customize items, and place your order with a single tap.
+-  **Live Order Tracking** – Watch your order progress from kitchen to doorstep.
+-  **Secure Authentication** – Signup/Login with validation and state persistence.
+-  **Light & Dark Themes** – Seamlessly switch between light and dark modes.
+-  **Fast & Responsive** – Optimized for both iOS and Android.
 
 ---
 
@@ -38,6 +38,51 @@ It’s designed to give users a smooth experience — from browsing restaurants 
 | Networking    | Axios / Fetch API |
 
 ---
+
+## Project Structure
+
+```
+Foodles/
+│── components/        # Reusable UI components
+│── screens/           # App screens
+│── features/          # Redux slices
+│── services/          # API layer
+│── mock-api/          # Mock backend
+│── assets/            # Images
+│── App.js             # Entry point
+│── store.js           # Redux store
+```
+
+---
+
+## Installation
+
+```
+git clone https://github.com/your-username/foodles.git
+cd foodles
+npm install
+npx expo start
+```
+
+Run on:
+
+* Android emulator (press "a")
+* iOS simulator (press "i")
+* Physical device using Expo Go
+
+---
+
+## Future Improvements
+
+* User authentication (Firebase / JWT)
+* Persistent cart storage
+* Checkout flow (address, payment, coupons)
+* Favorites and order history
+* Backend integration for orders and users
+* Admin dashboard and analytics
+
+---
+
 
 
 
